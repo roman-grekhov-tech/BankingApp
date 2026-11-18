@@ -70,4 +70,31 @@ public class BankStatementProcessor {
         return leastExpensive;
     }
 
+    public double[] calculateExpensesByMonth() {
+        double[] expensesByMonth = new double[12];
+
+        for (BankTransaction transaction : transactions) {
+            if (!transaction.isExpense()) continue;
+            int month = transaction.getDate().getMonthValue() - 1;
+            expensesByMonth[month] += transaction.getAmount();
+        }
+
+        for (int i = 0; i < 12; i++) {
+            expensesByMonth[i] *= -1;
+        }
+
+        return expensesByMonth;
+    }
+
+//    private double calculateTotalExpensesInMonth(Month month) {
+//        double result = 0;
+//        for (BankTransaction transaction : transactions) {
+//            if (!transaction.isExpense()) continue;
+//            if (transaction.getDate().getMonth() != month) continue;
+//
+//            result += transaction.getAmount();
+//        }
+//
+//        return -result;
+//    }
 }
