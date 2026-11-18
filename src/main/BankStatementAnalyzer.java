@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -34,5 +35,18 @@ public class BankStatementAnalyzer {
                 + processor.calculateTotalInMonth(Month.FEBRUARY));
         System.out.println("The total salary received is "
                 + processor.calculateTotalForCategory("Salary"));
+        System.out.println("Most expensive transaction in February is "
+                + processor.findMostExpensiveTransactionInPeriod(
+                        LocalDate.of(2017, Month.FEBRUARY, 1),
+                        LocalDate.of(2017, Month.FEBRUARY, 28)
+                )
+        );
+        System.out.println("Least expensive transaction in February is "
+                        + processor.findLeastExpensiveTransactionInPeriod(
+                        LocalDate.of(2017, Month.FEBRUARY, 1),
+                        LocalDate.of(2017, Month.FEBRUARY, 28)
+                )
+        );
+
     }
 }

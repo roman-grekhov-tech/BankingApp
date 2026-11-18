@@ -1,5 +1,6 @@
 package main;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -40,5 +41,32 @@ public class BankStatementProcessor {
         }
 
         return result;
+    }
+
+    public BankTransaction findMostExpensiveTransactionInPeriod(LocalDate start, LocalDate end) {
+        BankTransaction mostExpensive = transactions.getFirst();
+
+        for (BankTransaction transaction : transactions) {
+            if (transaction.getDate().isBefore(start) || transaction.getDate().isAfter(end)) continue;
+            if (transaction.getAmount() < mostExpensive.getAmount()) {
+                mostExpensive = transaction;
+            }
+        }
+
+        return mostExpensive;
+    }
+
+    public BankTransaction findLeastExpensiveTransactionInPeriod(LocalDate start, LocalDate end) {
+        BankTransaction leastExpensive = transactions.getFirst();
+
+        for (BankTransaction transaction : transactions) {
+            if (transaction.getDate().isBefore(start) || transaction.getDate().isAfter(end)) continue;
+            if (transaction.getAmount() >= 0) continue;
+            if (transaction.getAmount() > leastExpensive.getAmount()) {
+                leastExpensive = transaction;
+            }
+        }
+
+        return leastExpensive;
     }
 }
