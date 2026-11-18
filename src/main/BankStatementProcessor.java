@@ -61,12 +61,16 @@ public class BankStatementProcessor {
 
         for (BankTransaction transaction : transactions) {
             if (transaction.getDate().isBefore(start) || transaction.getDate().isAfter(end)) continue;
-            if (transaction.getAmount() >= 0) continue;
+            if (!isExpense(transaction)) continue;
             if (transaction.getAmount() > leastExpensive.getAmount()) {
                 leastExpensive = transaction;
             }
         }
 
         return leastExpensive;
+    }
+
+    private boolean isExpense(BankTransaction transaction) {
+        return transaction.getAmount() < 0;
     }
 }
