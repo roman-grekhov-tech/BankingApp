@@ -26,6 +26,10 @@ public class BankTransaction {
         return description;
     }
 
+    public boolean isExpense() {
+        return this.amount < 0;
+    }
+
     @Override
     public String toString() {
         return "main.BankTransaction{" +
