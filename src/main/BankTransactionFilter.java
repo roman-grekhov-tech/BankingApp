@@ -1,6 +1,4 @@
-package main.bankTransactionFilter;
-
-import main.BankTransaction;
+package main;
 
 @FunctionalInterface
 public interface BankTransactionFilter {

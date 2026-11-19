@@ -1,7 +1,5 @@
 package main;
 
-import main.bankTransactionFilter.BankTransactionFilter;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -15,6 +13,21 @@ public class BankStatementProcessor {
         this.transactions = transactions;
     }
 
+    public double summarizeTransactions(BankTransactionSummarizer summarizer) {
+        double result = 0;
+        for (BankTransaction transaction : transactions) {
+            result = summarizer.summarize(result, transaction);
+        }
+
+        return result;
+    }
+
+    public List<BankTransaction> findTransactionsGreaterThanOrEqual(double amount) {
+        return findTransactions((bankTransaction ->
+                bankTransaction.getAmount() >= amount)
+        );
+    }
+
     public double calculateTotalAmount() {
         double result = 0;
         for (BankTransaction transaction : transactions) {
@@ -25,25 +38,21 @@ public class BankStatementProcessor {
     }
 
     public double calculateTotalInMonth(Month month) {
-        double result = 0;
-        for (BankTransaction transaction : transactions) {
-            if (transaction.getDate().getMonth() == month) {
-                result += transaction.getAmount();
-            }
-        }
-
-        return result;
+        return summarizeTransactions(((acc, bankTransaction) ->
+                bankTransaction.getDate().getMonth() == month
+                        ? acc + bankTransaction.getAmount()
+                        : acc
+                )
+        );
     }
 
     public double calculateTotalForCategory(String category) {
-        double result = 0;
-        for (BankTransaction transaction : transactions) {
-            if (transaction.getDescription().equals(category)) {
-                result += transaction.getAmount();
-            }
-        }
-
-        return result;
+        return summarizeTransactions(((acc, bankTransaction) ->
+                bankTransaction.getDescription().equals(category)
+                    ? acc + bankTransaction.getAmount()
+                    : acc
+                )
+        );
     }
 
     public BankTransaction findMostExpensiveTransactionInPeriod(LocalDate start, LocalDate end) {
