@@ -1,7 +1,10 @@
 package main;
 
+import main.bankTransactionFilter.BankTransactionFilter;
+
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BankStatementProcessor {
@@ -84,6 +87,15 @@ public class BankStatementProcessor {
         }
 
         return expensesByMonth;
+    }
+
+    public List<BankTransaction> findTransactions(BankTransactionFilter bankTransactionFilter) {
+        List<BankTransaction> result = new ArrayList<>();
+        for (BankTransaction bt : transactions) {
+            if (bankTransactionFilter.test(bt)) result.add(bt);
+        }
+
+        return result;
     }
 
 //    private double calculateTotalExpensesInMonth(Month month) {
